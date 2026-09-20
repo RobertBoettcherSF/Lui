@@ -9,13 +9,19 @@ finished Windows GUI editor.
 
 ## What works today
 
-Clone on Linux Mint (or any Linux with GNAT) and run the tests:
+Clone on Linux Mint (or any Linux with GNAT):
 
 ```sh
 git clone https://github.com/RobertBoettcherSF/Lui.git
 cd Lui
-make test
+make test          # V&V: expect 28 PASS
+make               # or: make lui  → builds bin/lui
+make run           # runs ./bin/lui (CLI stub)
 ```
+
+There is **no `./lui` GUI binary** yet. `make` / `make lui` produces
+`./bin/lui`, a small CLI that prints the milestone blurb and points you at
+`make test`. Use `./bin/tests` (or `make test`) for verification.
 
 Requires a recent GNAT (`gnatmake`). Flags used: `-gnatwa -gnat2022`.
 

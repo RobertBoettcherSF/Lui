@@ -49,8 +49,8 @@ package body Lui_Common.Color_Themes is
 
    Theme_Color_Array : constant
      array (Color_Theme_Type, Color_Topic) of RGB_Type :=
-     (Default =>
-        (Foreground                        => Very_Dark_Gray,
+     [Default =>
+        [Foreground                        => Very_Dark_Gray,
          Background                        => White,
          Keyword                           => Blue,
          Number                            => Dark_Orange,
@@ -90,10 +90,10 @@ package body Lui_Common.Color_Themes is
          Tab_Foreground_Selected           => Very_Dark_Gray,
          Tab_Foreground_Hovered            => 16#4A4A4A#,
          Tab_Foreground_Selected_Hovered   => Black,
-         Tab_Frame                         => Black),
+         Tab_Frame                         => Black],
 
       Dark_Side =>
-        (Foreground                        => Light_Gray,
+        [Foreground                        => Light_Gray,
          Background                        => 16#222324#,
          Keyword                           => Dark_Orange,
          Number                            => Red,
@@ -133,10 +133,10 @@ package body Lui_Common.Color_Themes is
          Tab_Foreground_Selected           => 16#F8F8F8#,
          Tab_Foreground_Hovered            => 16#BABABA#,
          Tab_Foreground_Selected_Hovered   => 16#FCFCFC#,
-         Tab_Frame                         => 16#A09C90#),
+         Tab_Frame                         => 16#A09C90#],
 
       Solarized_Light =>
-        (Foreground                        => Solarized.Base01,
+        [Foreground                        => Solarized.Base01,
          Background                        => Solarized.Base3,
          Keyword                           => Solarized.Green,
          Number                            => Solarized.Magenta,
@@ -176,9 +176,9 @@ package body Lui_Common.Color_Themes is
          Tab_Foreground_Selected           => 16#586E75#,
          Tab_Foreground_Hovered            => 16#819297#,
          Tab_Foreground_Selected_Hovered   => 16#485E65#,
-         Tab_Frame                         => 16#D4A6C2#));
+         Tab_Frame                         => 16#D4A6C2#]];
 
-   function HTML_Image (RGB : RGB_Type) return String is
+function HTML_Image (RGB : RGB_Type) return String is
       use Interfaces;
       package IO_32 is new Ada.Text_IO.Integer_IO (Integer_32);
       Res : String (1 .. 11);
