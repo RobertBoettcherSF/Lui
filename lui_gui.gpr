@@ -1,0 +1,23 @@
+--  Lui thin GtkAda GUI — gprbuild project
+--  Requires: libgtkada-dev (Debian/Ubuntu/Mint: apt install libgtkada-dev)
+
+with "gtkada";
+
+project Lui_Gui is
+
+   for Source_Dirs use ("src");
+   for Object_Dir use "obj/gui";
+   for Exec_Dir use "bin";
+   for Main use ("lui_gui.adb");
+
+   package Builder is
+      for Executable ("lui_gui.adb") use "lui-gui";
+      for Switches ("Ada") use ("-s");
+   end Builder;
+
+   package Compiler is
+      for Switches ("Ada") use
+        ("-gnatwa", "-gnat2022", "-gnato", "-fstack-check", "-O2");
+   end Compiler;
+
+end Lui_Gui;

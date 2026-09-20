@@ -4,26 +4,46 @@
 project inspired by [LEA](https://github.com/zertovitch/lea)
 (Lightweight Editor for Ada) by Gautier de Montmollin.
 
-This repository is an **honest MVP**: a Linux-testable Ada **core**, not a
-finished Windows GUI editor.
+This repository is an **honest MVP**: a Linux-testable Ada **core** plus a
+**thin GtkAda GUI** on Linux. It is not yet a finished Windows GUI editor.
 
 ## What works today
 
-Clone on Linux Mint (or any Linux with GNAT):
+Clone on Linux Mint (or any Debian/Ubuntu-family Linux with GNAT):
 
 ```sh
 git clone https://github.com/RobertBoettcherSF/Lui.git
 cd Lui
 make test          # V&V: expect 28 PASS
-make               # or: make lui  → builds bin/lui
-make run           # runs ./bin/lui (CLI stub)
+make               # or: make lui  → builds bin/lui (CLI stub)
+make run           # runs ./bin/lui
 ```
 
-There is **no `./lui` GUI binary** yet. `make` / `make lui` produces
-`./bin/lui`, a small CLI that prints the milestone blurb and points you at
-`make test`. Use `./bin/tests` (or `make test`) for verification.
+### Thin GtkAda GUI (Linux)
 
-Requires a recent GNAT (`gnatmake`). Flags used: `-gnatwa -gnat2022`.
+```sh
+sudo apt install gnat gprbuild libgtkada-dev
+make gui           # or: make lui-gui  → builds bin/lui-gui
+make run-gui       # runs ./bin/lui-gui
+```
+
+`bin/lui-gui` opens a window titled **Lui** with a monospace
+`Gtk.Text_View` editor, **File → Open…** (loads a file into the buffer),
+and **File → Quit**. Save is not in this milestone.
+
+| Distro family | Install GtkAda |
+|---------------|----------------|
+| Debian / Ubuntu / Linux Mint | `sudo apt install libgtkada-dev` |
+| (pulls the matching runtime, e.g. `libgtkada23` on Debian 13 / Ubuntu 24.04+) | |
+
+Older releases may ship `libgtkada22-dev` etc.; the metapackage name
+`libgtkada-dev` tracks the current binding. You also need `gprbuild`
+(usually from package `gprbuild` or `gnat`).
+
+Build uses `lui_gui.gpr` (`with "gtkada";`).
+
+Requires a recent GNAT (`gnatmake` / `gprbuild`). Core flags:
+`-gnatwa -gnat2022`.
 
 ### Packages in this milestone
 
@@ -34,17 +54,20 @@ Requires a recent GNAT (`gnatmake`). Flags used: `-gnatwa -gnat2022`.
 | `Lui_Common.Syntax` | Ada/GPR keyword lists + `Guess_Syntax` (LEA-derived) |
 | `Lui_Common.User_Options` | Option records + clamp helpers (LEA-derived, no HAC) |
 | `Lui_Scintilla_Deploy` | Write DLL/payload bytes to a disk path; join/cleanup |
+| `Lui_Gui` | Thin GtkAda window + TextView + Open/Quit (Linux) |
 
 `make test` exercises themes, syntax guessing, option clamps, UTF round-trip,
 and SciLexer **deploy logic** with a tiny fake payload (no real PE / DLL).
+The GUI is not covered by `make test`.
 
 ## What is *not* in this milestone
 
-- **No full GUI editor.** LEA’s UI needs GWindows + SciLexer on Windows.
-- **No GWindows port yet.**
+- **No GWindows** (Windows UI toolkit) — Linux GtkAda only for now.
+- **No full LEA-class editor** (Scintilla control, syntax highlighting UI, …).
 - **No real SciLexer.dll** bundled.
 - **No MemoryModule** (`MemoryModule.c` / `.h`, `MEMORYMODULE_LICENSE`,
   `memorymodule.o`) — deliberately omitted (MPL / in-memory PE load).
+- **No Save dialog** yet (Open only).
 - **No Alire crate** yet (Makefile-first; Alire only if deps demand it later).
 
 ## What’s next
@@ -55,6 +78,7 @@ and SciLexer **deploy logic** with a tiny fake payload (no real PE / DLL).
 3. Optional Alire when third-party Ada crates are pulled in.
 4. Optional SPARK Level 2 on more pure helpers (`Clamp_Int` / `Join_Path`
    already carry Ada contracts).
+5. Save / richer GtkAda editing features on Linux.
 
 ## How SciLexer will be loaded (Lui vs LEA)
 
@@ -81,4 +105,5 @@ validation remain the gate for what is published.
 ## Credits
 
 - [LEA](https://github.com/zertovitch/lea) — Gautier de Montmollin
+- [GtkAda](https://github.com/AdaCore/gtkada) — AdaCore (system package)
 - Scintilla / SciLexer — upstream Scintilla project (to be integrated later)
